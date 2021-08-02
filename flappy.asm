@@ -2,10 +2,10 @@ jmp main
 
 
 
-birdcima: string "<=>"
-birdbaixo: string "?@A"
+birdcima: string " . . "
+birdbaixo: string "< v >"
 
-apagaP: string "   "
+apagaP: string "     "
 
 perdeuStr: string "Voce perdeu lol -                    aperte espaco p/ voltar"
 
