@@ -2,8 +2,8 @@ jmp main
 
 
 
-birdcima: string "<=>"
-birdbaixo: string "?@A"
+birdcima: string " . . "
+birdbaixo: string "< v >"
 
 NumAleatorio: var #1 	; Guarda um numero aleatorio de 0 a 4
 
