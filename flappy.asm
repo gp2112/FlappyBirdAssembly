@@ -5,11 +5,14 @@ jmp main
 birdcima: string "<=>"
 birdbaixo: string "?@A"
 
+apagaP: string "   "
+
+perdeuStr: string "Voce perdeu lol -                    aperte espaco p/ voltar"
+
 NumAleatorio: var #1 	; Guarda um numero aleatorio de 0 a 4
 
-posBird: var #210
-gravity: var #1
 
+Tecla: var #255
 
 IncRand: var #1			; Incremento para circular na Tabela de nr. Randomicos
 Rand : var #30			; Tabela de nr. Randomicos entre 0 - 4
@@ -47,18 +50,144 @@ Rand : var #30			; Tabela de nr. Randomicos entre 0 - 4
 
 ;codigo principal
 
+posBird: var #1
+grav: var #1
+speedBird: var #1
+
+
 main:
 
+	; setta os valores iniciais
+	loadn r0, #410
+	loadn r1, #40
+	loadn r2, #0
+	store posBird, r0
+	store grav, r1
+	store speedBird, r2
+
+	; valores de comparacao
+	loadn r4, #' '
+	loadn r6, #40
+	loadn r7, #1160 ;fim da tela
+	
 	loadn r1, #tela0Linha0
 	call ImprimeTela2
-
-	; posicao inicial
-	loadn r0, #210
 	call imprimeBird
 
-	
+	mainloop:
+		; verifica se o passaro caiu
+		load r0, posBird
+		cmp r0, r7
+		jeg perdeu
+
+
+		call Delay
+
+		call apagaBird
+
+		call changePosBird
+		call imprimeBird
+		call Delay
+		call Delay
+		call Delay
+		call Delay
+		call Delay
+		
+		
+	continue:
+		call apagaBird
+		call Delay	
+		jmp mainloop
+
+	perdeu:
+		call ApagaTela
+		loadn r0, #410
+		loadn r1, #perdeuStr
+		call imprimeStr
+
+		call getEspaco
+		call ApagaTela
+		jmp main
+		
 	halt
 
+
+;r0 - posicao atual | r1 - tecla pressionada 
+changePosBird:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+
+	load r0, grav
+	load r1, speedBird
+	load r2, posBird
+
+	loadn r3, #' '
+
+	inchar r4
+
+	cmp r4, r3
+	jne fallBird
+
+	;sobe passaro - inverte vetor velocidade
+	loadn r1, #0
+	sub r2, r2, r0;
+	sub r2, r2, r0;
+	sub r2, r2, r0;
+	sub r2, r2, r0;
+	jmp endChangePosBird
+
+	fallBird:
+
+		add r1, r1, r0 ;velocidade = velocidade_inicial + aceleracao_g
+		add r2, r2, r1 ;posicao = posicao_inicial + velocidade
+
+	endChangePosBird:
+		; salva a nova velocidade e posicao do passaro
+		store speedBird, r1
+		store posBird, r2
+
+		pop r4
+		pop r3	
+		pop r2
+		pop r1
+		pop r0
+		rts
+
+apagaBird:
+	push r0
+	push r1
+	push r2
+
+	load r0, posBird
+	loadn r1, #apagaP
+	loadn r2, #40
+
+	call imprimeStr
+
+	add r0, r0, r2
+	call imprimeStr
+
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+getEspaco:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
+	push r0
+	push r1
+	loadn r1, #' '	; Se nao digitar nada vem 255
+
+   getEspacoLoop:
+		inchar r0			; Le o teclado, se nada for digitado = 255
+		cmp r0, r1			;compara r0 com 255
+		jne getEspacoLoop	; Fica lendo ate' que digite uma tecla valida
+
+	pop r1
+	pop r0
+	rts
 
 
 imprimeBird:
@@ -66,6 +195,8 @@ imprimeBird:
 	push r1
 	push r2
 	push r3 
+
+	load r0, posBird
 
 	loadn r3, #40
 
@@ -277,7 +408,7 @@ tela0Linha24 : string "                                        "
 tela0Linha25 : string "                                        "
 tela0Linha26 : string "                                        "
 tela0Linha27 : string "                                        "
-tela0Linha28 : string "                                        "
-tela0Linha29 : string "                                        "	
+tela0Linha28 : string "________________________________________"
+tela0Linha29 : string "////////////////////////////////////////"	
 
 
