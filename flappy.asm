@@ -68,7 +68,7 @@ main:
 	; valores de comparacao
 	loadn r4, #' '
 	loadn r6, #40
-	loadn r7, #1160 ;fim da tela
+	loadn r7, #1079 ;fim da tela
 	
 	loadn r1, #tela0Linha0
 	call ImprimeTela2
@@ -79,7 +79,9 @@ main:
 		load r0, posBird
 		cmp r0, r7
 		jeg perdeu
-
+		
+		cmp r0, r6
+		jle perdeu
 
 		call Delay
 
@@ -380,7 +382,7 @@ ApagaTela:
 ;------------------------	
 ; Declara uma tela vazia para ser preenchida em tempo de execussao:
 
-tela0Linha0  : string "                                        "
+tela0Linha0  : string "////////////////////////////////////////"
 tela0Linha1  : string "                                        "
 tela0Linha2  : string "                                        "
 tela0Linha3  : string "      .                         .       "
