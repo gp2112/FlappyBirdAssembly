@@ -16,37 +16,37 @@ Tecla: var #255
 
 IncRand: var #1			; Incremento para circular na Tabela de nr. Randomicos
 Rand : var #30			; Tabela de nr. Randomicos entre 0 - 4
-	static Rand + #0, #0
-	static Rand + #1, #3
-	static Rand + #2, #4
-	static Rand + #3, #1
-	static Rand + #4, #3
-	static Rand + #5, #1
-	static Rand + #6, #4
-	static Rand + #7, #1
-	static Rand + #8, #0
-	static Rand + #9, #2
-	static Rand + #10, #2
-	static Rand + #11, #1
-	static Rand + #12, #0
-	static Rand + #13, #1
-	static Rand + #14, #4
-	static Rand + #15, #2
-	static Rand + #16, #3
-	static Rand + #17, #3
-	static Rand + #18, #4
-	static Rand + #19, #1
-	static Rand + #20, #0
-	static Rand + #20, #3
-	static Rand + #21, #2
-	static Rand + #22, #2
-	static Rand + #23, #3
-	static Rand + #24, #4
-	static Rand + #25, #4
-	static Rand + #26, #0
-	static Rand + #27, #2
-	static Rand + #28, #0
-	static Rand + #29, #2
+	static Rand + #0, #159
+	static Rand + #1, #559
+	static Rand + #2, #1039
+	static Rand + #3, #159
+	static Rand + #4, #839
+	static Rand + #5, #119
+	static Rand + #6, #359
+	static Rand + #7, #1079
+	static Rand + #8, #559
+	static Rand + #9, #199
+	static Rand + #10, #999
+	static Rand + #11, #639
+	static Rand + #12, #879
+	static Rand + #13, #1039
+	static Rand + #14, #479
+	static Rand + #15, #239
+	static Rand + #16, #839
+	static Rand + #17, #119
+	static Rand + #18, #1079
+	static Rand + #19, #1039
+	static Rand + #20, #279
+	static Rand + #20, #519
+	static Rand + #21, #879
+	static Rand + #22, #239
+	static Rand + #23, #679
+	static Rand + #24, #199
+	static Rand + #25, #1119
+	static Rand + #26, #439
+	static Rand + #27, #119
+	static Rand + #28, #759
+	static Rand + #29, #999
 
 ;codigo principal
 
@@ -54,6 +54,10 @@ posBird: var #1
 grav: var #1
 speedBird: var #1
 
+posTiro1: var #1					
+posTiro2: var #1
+posTiro3: var #1
+posTiro4: var #1
 
 Main:
 
@@ -64,14 +68,30 @@ Main:
 	store posBird, r0
 	store grav, r1
 	store speedBird, r2
-
+	store posTiro1, r2
+	
+	loadn r2, #1
+	store posTiro2, r2
+	store posTiro3, r2
+	
+	loadn r2, #3
+	store posTiro4, r2
+	
+	loadn r2, #0
+				
 	; valores de comparacao
 	loadn r4, #' '
 	loadn r6, #40
 	loadn r7, #1079 ;fim da tela
 	
+	loadn r2, #0
 	loadn r1, #tela0Linha0
 	call ImprimeTela2
+	
+	loadn r2, #512
+	loadn r1, #tela1Linha0
+	call ImprimeTela2
+	
 	call ImprimeBird
 
 	Mainloop:
@@ -82,6 +102,13 @@ Main:
 
 		call ChangePosBird
 		call ImprimeBird
+		call VerificaBird
+		
+		call MoveTiro1
+		call MoveTiro2
+		call MoveTiro3
+		call MoveTiro4
+		
 		; verifica se o passaro caiu
 		cmp r0, r7
 		jeg perdeu
@@ -90,9 +117,6 @@ Main:
 		cmp r0, r6
 		jle perdeu
 		
-		call Delay
-		call Delay
-		call Delay
 		call Delay
 		call Delay
 		
@@ -151,7 +175,8 @@ ChangePosBird:
 		; salva a nova velocidade e posicao do passaro
 		store speedBird, r1
 		store posBird, r2
-
+		
+		
 		pop r4
 		pop r3	
 		pop r2
@@ -177,6 +202,107 @@ ApagaBird:
 	pop r1
 	pop r0
 	rts
+	
+VerificaBird:
+		push r0
+		push r1
+		push r2
+		push r3
+		push r4
+		push r5
+	
+		load r2, posBird
+
+		load r0, posTiro1
+		load r3, posTiro2
+		load r4, posTiro3
+		load r5, posTiro4
+		loadn r1, #40 
+	
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	inc r2
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	inc r2
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	add r2, r2, r1
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	dec r2
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	dec r2
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+
+	  	pop r5
+		pop r4
+		pop r3	
+		pop r2
+		pop r1
+		pop r0
+ 		rts
 
 GetEspaco:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
 	push r0
@@ -216,6 +342,404 @@ ImprimeBird:
 	pop r0
 	rts
 
+MoveTiro1:
+	push r0
+	push r1
+	push r2
+
+  load r0, posTiro1	
+  call MoveTiro_Apaga
+  
+  call MoveTiro1_RecalculaPos
+  
+  load r0, posTiro1
+  call MoveTiro_Desenha		
+ 
+ 	loadn r2, #40 
+	load r0, posTiro1
+	
+	load r1, posBird
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	add r1, r1, r2
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+MoveTiro1_RecalculaPos:
+	push r0
+	push r1
+	push r2
+	
+	; verificar se o tiro chegou na ultima linha
+	load r0, posTiro1
+	loadn r1, #40		
+	loadn r2, #0
+	mod R1, R0, R1		
+	cmp R1, R2			
+	jeq MoveTiro1_RecalculaPos_Reinicia
+	
+	; se nao chegou -> decrementar uma casa
+		dec r0
+	jmp MoveTiro1_RecalculaPos_Fim2
+
+	;se chegou -> gerar nova posicao aleatoria
+  MoveTiro1_RecalculaPos_Reinicia:
+  	loadn r2, #Rand 	; declara ponteiro para tabela rand na memoria!
+	load r1, IncRand	; Pega Incremento da tabela Rand
+	add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
+						; R2 = Rand + IncRand
+	loadi r0, r2 		; busca nr. randomico da memoria em R0
+						; R3 = Rand(IncRand)				
+	inc r1				; Incremento ++
+	loadn r2, #30
+	cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
+	jne MoveTiro1_RecalculaPos_Skip
+		loadn r1, #0		; re-estarta a Tabela Rand em 0
+  MoveTiro1_RecalculaPos_Skip:
+	store IncRand, r1	; Salva incremento ++
+  	
+  MoveTiro1_RecalculaPos_Fim2:
+	store posTiro1, r0
+  	
+  MoveTiro1_RecalculaPos_Fim:
+  	
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+;-------------------------------------------
+MoveTiro2:
+	push r0
+	push r1
+	push r2
+
+  load r0, posTiro2
+  call MoveTiro_Apaga
+  
+  call MoveTiro2_RecalculaPos
+ 
+  load r0, posTiro2
+  call MoveTiro_Desenha		
+	
+	loadn r2, #40 
+	load r0, posTiro2
+	
+	load r1, posBird
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	add r1, r1, r2
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+	
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+MoveTiro2_RecalculaPos:
+	push r0
+	push r1
+	push r2
+	
+	; verificar se o tiro chegou na ultima linha
+	load r0, posTiro2
+	loadn r1, #40		
+	loadn r2, #1
+	mod R1, R0, R1		
+	cmp R1, R2			
+	jeq MoveTiro2_RecalculaPos_Reinicia
+	
+	; se nao chegou -> decrementar 2 casas
+		loadn r2, #2
+		sub r0, r0, r2
+	jmp MoveTiro2_RecalculaPos_Fim2
+
+	;se chegou -> gerar nova posicao aleatoria
+  MoveTiro2_RecalculaPos_Reinicia:
+  	loadn r2, #Rand 	; declara ponteiro para tabela rand na memoria!
+	load r1, IncRand	; Pega Incremento da tabela Rand
+	add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
+						; R2 = Rand + IncRand
+	loadi r0, r2 		; busca nr. randomico da memoria em R0
+						; R3 = Rand(IncRand)				
+	inc r1				; Incremento ++
+	loadn r2, #30
+	cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
+	jne MoveTiro2_RecalculaPos_Skip
+		loadn r1, #0		; re-estarta a Tabela Rand em 0
+  MoveTiro2_RecalculaPos_Skip:
+	store IncRand, r1	; Salva incremento ++
+  	
+  MoveTiro2_RecalculaPos_Fim2:
+	store posTiro2, r0
+  	
+  MoveTiro2_RecalculaPos_Fim:
+  	
+	pop r2
+	pop r1
+	pop r0
+	rts
+;-------------------------------------------
+MoveTiro3:
+	push r0
+	push r1
+	push r2
+  
+  load r0, posTiro3
+  call MoveTiro_Apaga
+  
+  call MoveTiro3_RecalculaPos
+  
+  load r0, posTiro3
+  call MoveTiro_Desenha		
+
+	loadn r2, #40 
+	load r0, posTiro3
+	
+	load r1, posBird
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	add r1, r1, r2
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+	
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+MoveTiro3_RecalculaPos:
+	push r0
+	push r1
+	push r2
+	
+	; verificar se o tiro chegou na ultima linha
+	load r0, posTiro3
+	loadn r1, #40		
+	loadn r2, #1
+	mod R1, R0, R1		
+	cmp R1, R2			
+	jeq MoveTiro3_RecalculaPos_Reinicia
+	
+	; se nao chegou -> decrementar 3 casas
+		loadn r2, #3
+		sub r0, r0, r2
+	jmp MoveTiro3_RecalculaPos_Fim2
+
+	;se chegou -> gerar nova posicao aleatoria
+  MoveTiro3_RecalculaPos_Reinicia:
+  	loadn r2, #Rand 	; declara ponteiro para tabela rand na memoria!
+	load r1, IncRand	; Pega Incremento da tabela Rand
+	add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
+						; R2 = Rand + IncRand
+	loadi r0, r2 		; busca nr. randomico da memoria em R0
+						; R3 = Rand(IncRand)				
+	inc r1				; Incremento ++
+	loadn r2, #30
+	cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
+	jne MoveTiro3_RecalculaPos_Skip
+		loadn r1, #0		; re-estarta a Tabela Rand em 0
+  MoveTiro3_RecalculaPos_Skip:
+	store IncRand, r1	; Salva incremento ++
+  	
+  MoveTiro3_RecalculaPos_Fim2:
+	store posTiro3, r0
+  	
+  MoveTiro3_RecalculaPos_Fim:
+  	
+	pop r2
+	pop r1
+	pop r0
+	rts
+;---------------------------------------
+MoveTiro4:
+	push r0
+	push r1
+	push r2
+  
+  load r0, posTiro4
+  call MoveTiro_Apaga
+  
+  call MoveTiro4_RecalculaPos
+  
+  load r0, posTiro4
+  call MoveTiro_Desenha		
+
+    loadn r2, #40 
+	load r0, posTiro4
+	
+	load r1, posBird
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	add r1, r1, r2
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+	
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+MoveTiro4_RecalculaPos:
+	push r0
+	push r1
+	push r2
+	
+	; verificar se o tiro chegou na ultima linha
+	load r0, posTiro4
+	loadn r1, #40		
+	loadn r2, #3
+	mod R1, R0, R1		
+	cmp R1, R2			
+	jeq MoveTiro4_RecalculaPos_Reinicia
+	
+	; se nao chegou -> decrementar 4 casas
+		loadn r2, #4
+		sub r0, r0, r2
+	jmp MoveTiro4_RecalculaPos_Fim2
+
+	;se chegou -> gerar nova posicao aleatoria
+  MoveTiro4_RecalculaPos_Reinicia:
+  	loadn r2, #Rand 	; declara ponteiro para tabela rand na memoria!
+	load r1, IncRand	; Pega Incremento da tabela Rand
+	add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
+						; R2 = Rand + IncRand
+	loadi r0, r2 		; busca nr. randomico da memoria em R0
+						; R3 = Rand(IncRand)				
+	inc r1				; Incremento ++
+	loadn r2, #30
+	cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
+	jne MoveTiro4_RecalculaPos_Skip
+		loadn r1, #0		; re-estarta a Tabela Rand em 0
+  MoveTiro4_RecalculaPos_Skip:
+	store IncRand, r1	; Salva incremento ++
+  	
+  MoveTiro4_RecalculaPos_Fim2:
+	store posTiro4, r0
+  	
+  MoveTiro4_RecalculaPos_Fim:
+  	
+	pop r2
+	pop r1
+	pop r0
+	rts
+;---------------------------------------
+MoveTiro_Apaga:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+
+	
+	; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+	loadn r1, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
+	add r2, r1, r0	; R2 = Tela1Linha0 + posAnt
+	loadn r4, #40
+	div r3, r0, r4	; R3 = posAnt/40
+	add r2, r2, r3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+	
+	loadi r5, r2	; R5 = Char (Tela(posAnt))
+	
+	outchar r5, r0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+	
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+MoveTiro_Desenha:
+	push r0
+	push r1
+	push r2
+	
+	Loadn r1, #'-'	; Tiro
+	loadn r2, #2304
+	add r1, r1, r2
+	outchar r1, r0
+	
+	pop r2
+	pop r1
+	pop r0
+	rts
 
 ; r0 -> posicao
 ; r1 -> endereco string
@@ -252,7 +776,7 @@ ImprimeStr:
 ;********************************************************
 
 Delay:
-						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
+						;Utiliza Push e Pop para nao afetar os Registradores do programa principal
 	Push R0
 	Push R1
 	
@@ -411,7 +935,36 @@ tela0Linha24 : string "                                        "
 tela0Linha25 : string "                                        "
 tela0Linha26 : string "                                        "
 tela0Linha27 : string "                                        "
-tela0Linha28 : string "________________________________________"
-tela0Linha29 : string "////////////////////////////////////////"	
-
-
+tela0Linha28 : string "                                        "
+tela0Linha29 : string "                                        "	
+ 
+tela1Linha0  : string "                                        "
+tela1Linha1  : string "                                        "
+tela1Linha2  : string "                                        "
+tela1Linha3  : string "                                        "
+tela1Linha4  : string "                                        "
+tela1Linha5  : string "                                        "
+tela1Linha6  : string "                                        "
+tela1Linha7  : string "                                        "
+tela1Linha8  : string "                                        "
+tela1Linha9  : string "                                        "
+tela1Linha10 : string "                                        "
+tela1Linha11 : string "                                        "
+tela1Linha12 : string "                                        "
+tela1Linha13 : string "                                        "
+tela1Linha14 : string "                                        "
+tela1Linha15 : string "                                        "
+tela1Linha16 : string "                                        "
+tela1Linha17 : string "                                        "
+tela1Linha18 : string "                                        "
+tela1Linha19 : string "                                        "
+tela1Linha20 : string "                                        "
+tela1Linha21 : string "                                        "
+tela1Linha22 : string "                                        "
+tela1Linha23 : string "                                        "
+tela1Linha24 : string "                                        "
+tela1Linha25 : string "                                        "
+tela1Linha26 : string "                                        "
+tela1Linha27 : string "                                        "
+tela1Linha28 : string "________________________________________"
+tela1Linha29 : string "////////////////////////////////////////"
