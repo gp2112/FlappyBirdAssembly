@@ -87,6 +87,9 @@ main:
 
 		call changePosBird
 		call imprimeBird
+		
+		call Delay
+		call Delay
 		call Delay
 		call Delay
 		call Delay
