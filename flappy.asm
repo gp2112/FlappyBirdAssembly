@@ -1,4 +1,4 @@
-jmp main
+jmp Main
 
 
 
@@ -55,7 +55,7 @@ grav: var #1
 speedBird: var #1
 
 
-main:
+Main:
 
 	; setta os valores iniciais
 	loadn r0, #410
@@ -72,26 +72,24 @@ main:
 	
 	loadn r1, #tela0Linha0
 	call ImprimeTela2
-	call imprimeBird
+	call ImprimeBird
 
-	mainloop:
-		; verifica se o passaro caiu
+	Mainloop:
 		load r0, posBird
+
+
+		call ApagaBird
+
+		call ChangePosBird
+		call ImprimeBird
+		; verifica se o passaro caiu
 		cmp r0, r7
 		jeg perdeu
 		
+		; verifica se bateu no teto
 		cmp r0, r6
 		jle perdeu
-
-		call Delay
-
-		call apagaBird
-
-		call changePosBird
-		call imprimeBird
 		
-		call Delay
-		call Delay
 		call Delay
 		call Delay
 		call Delay
@@ -100,25 +98,25 @@ main:
 		
 		
 	continue:
-		call apagaBird
+		call ApagaBird
 		call Delay	
-		jmp mainloop
+		jmp Mainloop
 
 	perdeu:
 		call ApagaTela
 		loadn r0, #410
 		loadn r1, #perdeuStr
-		call imprimeStr
+		call ImprimeStr
 
-		call getEspaco
+		call GetEspaco
 		call ApagaTela
-		jmp main
+		jmp Main
 		
 	halt
 
 
 ;r0 - posicao atual | r1 - tecla pressionada 
-changePosBird:
+ChangePosBird:
 	push r0
 	push r1
 	push r2
@@ -134,7 +132,7 @@ changePosBird:
 	inchar r4
 
 	cmp r4, r3
-	jne fallBird
+	jne FallBird
 
 	;sobe passaro - inverte vetor velocidade
 	loadn r1, #0
@@ -142,14 +140,14 @@ changePosBird:
 	sub r2, r2, r0;
 	sub r2, r2, r0;
 	sub r2, r2, r0;
-	jmp endChangePosBird
+	jmp EndChangePosBird
 
-	fallBird:
+	FallBird:
 
 		add r1, r1, r0 ;velocidade = velocidade_inicial + aceleracao_g
 		add r2, r2, r1 ;posicao = posicao_inicial + velocidade
 
-	endChangePosBird:
+	EndChangePosBird:
 		; salva a nova velocidade e posicao do passaro
 		store speedBird, r1
 		store posBird, r2
@@ -161,7 +159,7 @@ changePosBird:
 		pop r0
 		rts
 
-apagaBird:
+ApagaBird:
 	push r0
 	push r1
 	push r2
@@ -170,32 +168,32 @@ apagaBird:
 	loadn r1, #apagaP
 	loadn r2, #40
 
-	call imprimeStr
+	call ImprimeStr
 
 	add r0, r0, r2
-	call imprimeStr
+	call ImprimeStr
 
 	pop r2
 	pop r1
 	pop r0
 	rts
 
-getEspaco:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
+GetEspaco:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
 	push r0
 	push r1
 	loadn r1, #' '	; Se nao digitar nada vem 255
 
-   getEspacoLoop:
+   GetEspacoLoop:
 		inchar r0			; Le o teclado, se nada for digitado = 255
 		cmp r0, r1			;compara r0 com 255
-		jne getEspacoLoop	; Fica lendo ate' que digite uma tecla valida
+		jne GetEspacoLoop	; Fica lendo ate' que digite uma tecla valida
 
 	pop r1
 	pop r0
 	rts
 
 
-imprimeBird:
+ImprimeBird:
 	push r0
 	push r1
 	push r2
@@ -206,11 +204,11 @@ imprimeBird:
 	loadn r3, #40
 
 	loadn r1, #birdcima
-	call imprimeStr
+	call ImprimeStr
 
 	add r0, r0, r3
 	loadn r1, #birdbaixo
-	call imprimeStr
+	call ImprimeStr
 
 	pop r3
 	pop r2
@@ -221,7 +219,7 @@ imprimeBird:
 
 ; r0 -> posicao
 ; r1 -> endereco string
-imprimeStr:
+ImprimeStr:
 	push r0
 	push r1
 	push r2
@@ -230,17 +228,17 @@ imprimeStr:
 
 	loadn r3, #'\0'
 
-	imprimestr_loop:
+	Imprimestr_loop:
 		loadi r4, r1
 		cmp r4, r3
-		jeq imprimestr_end
+		jeq Imprimestr_end
 		outchar r4, r0
 
 		inc r1
 		inc r0
-		jmp imprimestr_loop
+		jmp Imprimestr_loop
 
-	imprimestr_end:
+	Imprimestr_end:
 
 		pop r4
 		pop r3
