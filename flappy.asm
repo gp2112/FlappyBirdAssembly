@@ -63,6 +63,14 @@ posTiro5: var #1
 Main:
 
 	; setta os valores iniciais
+
+	loadn r0, #70
+	loadn r1, #51233
+
+	call ImprimeInt
+
+
+	halt
 	loadn r0, #410
 	loadn r1, #40
 	loadn r2, #0
@@ -121,6 +129,9 @@ Main:
 		cmp r0, r6
 		jle perdeu
 		
+		call Delay
+		call Delay
+		call Delay
 		call Delay
 		call Delay
 		
@@ -850,6 +861,43 @@ MoveTiro_Desenha:
 	pop r1
 	pop r0
 	rts
+
+
+; r0-> posicao
+; r1-> numero a ser impresso
+ImprimeInt:
+	push r0
+	push r1
+	push r2
+	push r3 ;armazena o digito
+	push r4
+	push r5
+
+	loadn r2, #10
+	loadn r4, #'0'
+	loadn r5, #0
+
+	ImprimeIntLoop:
+
+		mod r3, r1, r2
+		div r1, r1, r2
+
+		add r3, r3, r4
+		outchar r3, r0
+
+		dec r0 ;decrementa posicao
+
+		cmp r1, r5
+		jne ImprimeIntLoop
+
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
 
 ; r0 -> posicao
 ; r1 -> endereco string
