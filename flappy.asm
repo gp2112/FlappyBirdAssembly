@@ -70,7 +70,6 @@ Main:
 	call ImprimeInt
 
 
-	halt
 	loadn r0, #410
 	loadn r1, #40
 	loadn r2, #0
