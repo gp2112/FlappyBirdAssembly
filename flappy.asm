@@ -58,6 +58,7 @@ posTiro1: var #1
 posTiro2: var #1
 posTiro3: var #1
 posTiro4: var #1
+posTiro5: var #1
 
 Main:
 
@@ -73,6 +74,7 @@ Main:
 	loadn r2, #1
 	store posTiro2, r2
 	store posTiro3, r2
+	store posTiro5, r2
 	
 	loadn r2, #3
 	store posTiro4, r2
@@ -109,6 +111,7 @@ Main:
 		call MoveTiro2
 		call MoveTiro3
 		call MoveTiro4
+		call MoveTiro5
 		
 		; verifica se o passaro caiu
 		cmp r0, r7
@@ -211,6 +214,7 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 		push r3
 		push r4
 		push r5
+		push r6
 	
 		load r2, posBird
 
@@ -218,9 +222,10 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 		load r3, posTiro2
 		load r4, posTiro3
 		load r5, posTiro4
+		load r6, posTiro5
 		loadn r1, #40 
 		
-		;verificar cada tiro
+		;verificar cada tiro em cada parte do passaro
 	  	cmp r0, r2	
 	  	jeq perdeu
 	  	
@@ -231,6 +236,9 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 	  	jeq perdeu
 	  	
 	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r6, r2	
 	  	jeq perdeu
 	  	
 	  	inc r2
@@ -246,6 +254,9 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 	  	cmp r5, r2	
 	  	jeq perdeu
 	  	
+	  	cmp r6, r2	
+	  	jeq perdeu
+	  	
 	  	inc r2
 	  	cmp r0, r2	
 	  	jeq perdeu
@@ -257,6 +268,9 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 	  	jeq perdeu
 	  	
 	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r6, r2	
 	  	jeq perdeu
 	  	
 	  	add r2, r2, r1
@@ -272,17 +286,7 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 	  	cmp r5, r2	
 	  	jeq perdeu
 	  	
-	  	dec r2
-	  	cmp r0, r2	
-	  	jeq perdeu
-	  	
-	  	cmp r3, r2	
-	  	jeq perdeu
-	  	
-	  	cmp r4, r2	
-	  	jeq perdeu
-	  	
-	  	cmp r5, r2	
+	  	cmp r6, r2	
 	  	jeq perdeu
 	  	
 	  	dec r2
@@ -296,8 +300,28 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 	  	jeq perdeu
 	  	
 	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r6, r2	
+	  	jeq perdeu
+	  	
+	  	dec r2
+	  	cmp r0, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r3, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r4, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r5, r2	
+	  	jeq perdeu
+	  	
+	  	cmp r6, r2	
 	  	jeq perdeu
 
+	  	pop r6
 	  	pop r5
 		pop r4
 		pop r3	
@@ -434,50 +458,6 @@ MoveTiro1_RecalculaPos:
 
 ;-------------------------------------------
 MoveTiro2: ; apaga tiro2 na pos atual -> busca nova pos -> desenha na nova pos
-	push r0
-	push r1
-	push r2
-
-  load r0, posTiro1	
-  call MoveTiro_Apaga
-  
-  call MoveTiro1_RecalculaPos
-  
-  load r0, posTiro1
-  call MoveTiro_Desenha		
- 
- 	;verifica se o tiro acertou o passaro
- 	loadn r2, #40 
-	load r0, posTiro1
-	
-	load r1, posBird
-  	cmp r0, r1	
-  	jeq perdeu
-  	
-  	inc r1
-  	cmp r0, r1	
-  	jeq perdeu
-  	
-  	inc r1
-  	cmp r0, r1	
-  	jeq perdeu
-  	
-  	add r1, r1, r2
-  	cmp r0, r1	
-  	jeq perdeu
-  	
-  	dec r1
-  	cmp r0, r1	
-  	jeq perdeu
-  	
-  	dec r1
-  	cmp r0, r1	
-  	jeq perdeu
-
-	pop r2
-	pop r1
-	pop r0
-	rts 
 	push r0
 	push r1
 	push r2
@@ -734,6 +714,94 @@ MoveTiro4_RecalculaPos:
   	
   MoveTiro4_RecalculaPos_Fim:
 	store posTiro4, r0 ;salva nova posicao
+  	
+	pop r2
+	pop r1
+	pop r0
+	rts
+	
+;-------------------------------------------
+MoveTiro5: ; apaga tiro5 na pos atual -> busca nova pos -> desenha na nova pos
+	push r0
+	push r1
+	push r2
+
+  load r0, posTiro5
+  call MoveTiro_Apaga
+  
+  call MoveTiro5_RecalculaPos
+ 
+  load r0, posTiro5
+  call MoveTiro_Desenha		
+	
+	loadn r2, #40 
+	load r0, posTiro5
+	
+	load r1, posBird
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	add r1, r1, r2
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+	
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+MoveTiro5_RecalculaPos:
+	push r0
+	push r1
+	push r2
+	
+	; verificar se o tiro chegou na ultima linha (1)
+	load r0, posTiro5
+	loadn r1, #40		
+	loadn r2, #1
+	mod R1, R0, R1		
+	cmp R1, R2			
+	jeq MoveTiro5_RecalculaPos_Reinicia
+	
+	; se nao chegou -> decrementar 2 casas
+		loadn r2, #2
+		sub r0, r0, r2
+	jmp MoveTiro5_RecalculaPos_Fim
+
+	;se chegou -> gerar nova posicao aleatoria
+  MoveTiro5_RecalculaPos_Reinicia:
+  	loadn r2, #Rand 	; declara ponteiro para tabela rand na memoria!
+	load r1, IncRand	; Pega Incremento da tabela Rand
+	add r2, r2, r1		; Soma Incremento ao inicio da tabela Rand
+						; R2 = Rand + IncRand
+	loadi r0, r2 		; busca nr. randomico da memoria em R0
+						; R3 = Rand(IncRand)				
+	inc r1				; Incremento ++
+	loadn r2, #30
+	cmp r1, r2			; Compara com o Final da Tabela e re-estarta em 0
+	jne MoveTiro5_RecalculaPos_Skip
+		loadn r1, #0		; re-estarta a Tabela Rand em 0
+  MoveTiro5_RecalculaPos_Skip:
+	store IncRand, r1	; Salva incremento ++
+  	
+  MoveTiro5_RecalculaPos_Fim:
+	store posTiro5, r0 ;salva nova posicao
   	
 	pop r2
 	pop r1
