@@ -82,6 +82,7 @@ Main:
 
 		call ChangePosBird
 		call ImprimeBird
+		halt
 		; verifica se o passaro caiu
 		cmp r0, r7
 		jeg perdeu
