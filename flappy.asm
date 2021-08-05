@@ -112,7 +112,7 @@ Main:
 		call MoveTiro3
 		call MoveTiro4
 		call MoveTiro5
-		
+    
 		; verifica se o passaro caiu
 		cmp r0, r7
 		jeg perdeu
