@@ -15,7 +15,7 @@ NumAleatorio: var #1 	; Guarda um numero aleatorio de 0 a 4
 Tecla: var #255
 
 IncRand: var #1			; Incremento para circular na Tabela de nr. Randomicos
-Rand : var #30			; Tabela de nr. Randomicos entre 0 - 4
+Rand : var #30			; Tabela de nr. Randomicos entre 119 - 1119
 	static Rand + #0, #159
 	static Rand + #1, #559
 	static Rand + #2, #1039
@@ -65,8 +65,8 @@ Main:
 	loadn r0, #410
 	loadn r1, #40
 	loadn r2, #0
-	store posBird, r0
-	store grav, r1
+	store posBird, r0     
+	store grav, r1		   
 	store speedBird, r2
 	store posTiro1, r2
 	
@@ -104,6 +104,7 @@ Main:
 		call ImprimeBird
 		call VerificaBird
 		
+		;movimenta os tiros
 		call MoveTiro1
 		call MoveTiro2
 		call MoveTiro3
@@ -122,7 +123,7 @@ Main:
 		
 		
 	continue:
-		call ApagaBird
+
 		call Delay	
 		jmp Mainloop
 
@@ -203,7 +204,7 @@ ApagaBird:
 	pop r0
 	rts
 	
-VerificaBird:
+VerificaBird: ;verifica se passaro bateu em um tiro
 		push r0
 		push r1
 		push r2
@@ -218,7 +219,8 @@ VerificaBird:
 		load r4, posTiro3
 		load r5, posTiro4
 		loadn r1, #40 
-	
+		
+		;verificar cada tiro
 	  	cmp r0, r2	
 	  	jeq perdeu
 	  	
@@ -342,7 +344,7 @@ ImprimeBird:
 	pop r0
 	rts
 
-MoveTiro1:
+MoveTiro1: ; apaga tiro1 na pos atual -> busca nova pos -> desenha na nova pos
 	push r0
 	push r1
 	push r2
@@ -355,6 +357,7 @@ MoveTiro1:
   load r0, posTiro1
   call MoveTiro_Desenha		
  
+ 	;verifica se o tiro acertou o passaro
  	loadn r2, #40 
 	load r0, posTiro1
 	
@@ -385,14 +388,14 @@ MoveTiro1:
 	pop r2
 	pop r1
 	pop r0
-	rts
+	rts 
 
 MoveTiro1_RecalculaPos:
 	push r0
 	push r1
 	push r2
 	
-	; verificar se o tiro chegou na ultima linha
+	; verificar se o tiro chegou na ultima linha (0)
 	load r0, posTiro1
 	loadn r1, #40		
 	loadn r2, #0
@@ -402,7 +405,7 @@ MoveTiro1_RecalculaPos:
 	
 	; se nao chegou -> decrementar uma casa
 		dec r0
-	jmp MoveTiro1_RecalculaPos_Fim2
+	jmp MoveTiro1_RecalculaPos_Fim
 
 	;se chegou -> gerar nova posicao aleatoria
   MoveTiro1_RecalculaPos_Reinicia:
@@ -420,10 +423,9 @@ MoveTiro1_RecalculaPos:
   MoveTiro1_RecalculaPos_Skip:
 	store IncRand, r1	; Salva incremento ++
   	
-  MoveTiro1_RecalculaPos_Fim2:
-	store posTiro1, r0
-  	
   MoveTiro1_RecalculaPos_Fim:
+	store posTiro1, r0 ;salva nova posicao
+  	
   	
 	pop r2
 	pop r1
@@ -431,7 +433,51 @@ MoveTiro1_RecalculaPos:
 	rts
 
 ;-------------------------------------------
-MoveTiro2:
+MoveTiro2: ; apaga tiro2 na pos atual -> busca nova pos -> desenha na nova pos
+	push r0
+	push r1
+	push r2
+
+  load r0, posTiro1	
+  call MoveTiro_Apaga
+  
+  call MoveTiro1_RecalculaPos
+  
+  load r0, posTiro1
+  call MoveTiro_Desenha		
+ 
+ 	;verifica se o tiro acertou o passaro
+ 	loadn r2, #40 
+	load r0, posTiro1
+	
+	load r1, posBird
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	inc r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	add r1, r1, r2
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+  	
+  	dec r1
+  	cmp r0, r1	
+  	jeq perdeu
+
+	pop r2
+	pop r1
+	pop r0
+	rts 
 	push r0
 	push r1
 	push r2
@@ -481,7 +527,7 @@ MoveTiro2_RecalculaPos:
 	push r1
 	push r2
 	
-	; verificar se o tiro chegou na ultima linha
+	; verificar se o tiro chegou na ultima linha (1)
 	load r0, posTiro2
 	loadn r1, #40		
 	loadn r2, #1
@@ -492,7 +538,7 @@ MoveTiro2_RecalculaPos:
 	; se nao chegou -> decrementar 2 casas
 		loadn r2, #2
 		sub r0, r0, r2
-	jmp MoveTiro2_RecalculaPos_Fim2
+	jmp MoveTiro2_RecalculaPos_Fim
 
 	;se chegou -> gerar nova posicao aleatoria
   MoveTiro2_RecalculaPos_Reinicia:
@@ -510,17 +556,15 @@ MoveTiro2_RecalculaPos:
   MoveTiro2_RecalculaPos_Skip:
 	store IncRand, r1	; Salva incremento ++
   	
-  MoveTiro2_RecalculaPos_Fim2:
-	store posTiro2, r0
-  	
   MoveTiro2_RecalculaPos_Fim:
+	store posTiro2, r0 ;salva nova posicao
   	
 	pop r2
 	pop r1
 	pop r0
 	rts
 ;-------------------------------------------
-MoveTiro3:
+MoveTiro3: ; apaga tiro3 na pos atual -> busca nova pos -> desenha na nova pos
 	push r0
 	push r1
 	push r2
@@ -532,7 +576,8 @@ MoveTiro3:
   
   load r0, posTiro3
   call MoveTiro_Desenha		
-
+	
+	;verifica se o tiro acertou o passaro
 	loadn r2, #40 
 	load r0, posTiro3
 	
@@ -570,7 +615,7 @@ MoveTiro3_RecalculaPos:
 	push r1
 	push r2
 	
-	; verificar se o tiro chegou na ultima linha
+	; verificar se o tiro chegou na ultima linha (1)
 	load r0, posTiro3
 	loadn r1, #40		
 	loadn r2, #1
@@ -581,7 +626,7 @@ MoveTiro3_RecalculaPos:
 	; se nao chegou -> decrementar 3 casas
 		loadn r2, #3
 		sub r0, r0, r2
-	jmp MoveTiro3_RecalculaPos_Fim2
+	jmp MoveTiro3_RecalculaPos_Fim
 
 	;se chegou -> gerar nova posicao aleatoria
   MoveTiro3_RecalculaPos_Reinicia:
@@ -599,17 +644,15 @@ MoveTiro3_RecalculaPos:
   MoveTiro3_RecalculaPos_Skip:
 	store IncRand, r1	; Salva incremento ++
   	
-  MoveTiro3_RecalculaPos_Fim2:
-	store posTiro3, r0
-  	
   MoveTiro3_RecalculaPos_Fim:
+	store posTiro3, r0 ;salva nova posicao
   	
 	pop r2
 	pop r1
 	pop r0
 	rts
 ;---------------------------------------
-MoveTiro4:
+MoveTiro4: ; apaga tiro4 na pos atual -> busca nova pos -> desenha na nova pos
 	push r0
 	push r1
 	push r2
@@ -622,6 +665,7 @@ MoveTiro4:
   load r0, posTiro4
   call MoveTiro_Desenha		
 
+	;verifica se o tiro acertou o passaro
     loadn r2, #40 
 	load r0, posTiro4
 	
@@ -670,7 +714,7 @@ MoveTiro4_RecalculaPos:
 	; se nao chegou -> decrementar 4 casas
 		loadn r2, #4
 		sub r0, r0, r2
-	jmp MoveTiro4_RecalculaPos_Fim2
+	jmp MoveTiro4_RecalculaPos_Fim
 
 	;se chegou -> gerar nova posicao aleatoria
   MoveTiro4_RecalculaPos_Reinicia:
@@ -688,10 +732,8 @@ MoveTiro4_RecalculaPos:
   MoveTiro4_RecalculaPos_Skip:
 	store IncRand, r1	; Salva incremento ++
   	
-  MoveTiro4_RecalculaPos_Fim2:
-	store posTiro4, r0
-  	
   MoveTiro4_RecalculaPos_Fim:
+	store posTiro4, r0 ;salva nova posicao
   	
 	pop r2
 	pop r1
@@ -732,9 +774,9 @@ MoveTiro_Desenha:
 	push r2
 	
 	Loadn r1, #'-'	; Tiro
-	loadn r2, #2304
-	add r1, r1, r2
-	outchar r1, r0
+	loadn r2, #2304 ; carrega a cor (vermelho)
+	add r1, r1, r2 ;adiciona a cor 
+	outchar r1, r0 ; printa
 	
 	pop r2
 	pop r1
