@@ -86,12 +86,12 @@ Main:
 	loadn r6, #40
 	loadn r7, #1079 ;fim da tela
 	
-	loadn r2, #0
-	loadn r1, #tela0Linha0
+	loadn r2, #0; cor branco
+	loadn r1, #tela0Linha0 ; imprime o ceu
 	call ImprimeTela2
 	
-	loadn r2, #512
-	loadn r1, #tela1Linha0
+	loadn r2, #512 ;cor verde
+	loadn r1, #tela1Linha0 ;imprime a grama
 	call ImprimeTela2
 	
 	call ImprimeBird
