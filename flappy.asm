@@ -7,7 +7,10 @@ birdbaixo: string "?@A"
 
 apagaP: string "   "
 
-perdeuStr: string "Voce perdeu lol -                    aperte espaco p/ voltar"
+score: string "score:"
+
+perdeuStr: string "Voce perdeu lol -                    jogar novamente s/n ?"
+
 
 NumAleatorio: var #1 	; Guarda um numero aleatorio de 0 a 4
 
@@ -53,6 +56,7 @@ Rand : var #30			; Tabela de nr. Randomicos entre 119 - 1119
 posBird: var #1
 grav: var #1
 speedBird: var #1
+pontuacao: var #1
 
 posTiro1: var #1					
 posTiro2: var #1
@@ -63,21 +67,14 @@ posTiro5: var #1
 Main:
 
 	; setta os valores iniciais
-
-	loadn r0, #70
-	loadn r1, #51233
-
-	call ImprimeInt
-
-
 	loadn r0, #410
 	loadn r1, #40
 	loadn r2, #0
 	store posBird, r0     
 	store grav, r1		   
 	store speedBird, r2
+	store pontuacao, r2
 	store posTiro1, r2
-	
 	loadn r2, #1
 	store posTiro2, r2
 	store posTiro3, r2
@@ -102,13 +99,16 @@ Main:
 	call ImprimeTela2
 	
 	call ImprimeBird
+	
+	;valores para pontuacao
+	loadn r3, #0 ; r3 -> relogio
+	loadn r4, #0 ; r4 -> verificar mod da divisao
 
 	Mainloop:
+		
+		;movimenta passaro
 		load r0, posBird
-
-
 		call ApagaBird
-
 		call ChangePosBird
 		call ImprimeBird
 		call VerificaBird
@@ -127,31 +127,63 @@ Main:
 		; verifica se bateu no teto
 		cmp r0, r6
 		jle perdeu
-		
-		call Delay
-		call Delay
+	
 		call Delay
 		call Delay
 		call Delay
 		
 		
 	continue:
-
-		call Delay	
+		
+		;checa se pontuou -> r3/20 com resto 0
+		loadn r0, #20
+		mod r0, r3, r0
+		cmp r4, r0
+		jne naoPontua
+		call pontua
+		
+		naoPontua:
+		
+		;incrementa relogio
+		inc r3
+		
+		call Delay
 		jmp Mainloop
 
 	perdeu:
+		
+		;mensagem de derrota
 		call ApagaTela
 		loadn r0, #410
 		loadn r1, #perdeuStr
 		call ImprimeStr
-
-		call GetEspaco
-		call ApagaTela
-		jmp Main
 		
+		;imprime score
+		loadn r0, #53
+		loadn r1, #score
+		call ImprimeStr
+		
+		loadn r0, #95
+		load r1, pontuacao
+		call ImprimeInt
+		
+		; jogar de novo?
+		call GetDecisao
+		
+	fim: ; encerra o programa
+	
+	call ApagaTela
 	halt
 
+pontua: ; aumentar pontuacao
+	push r0
+	
+	load r0, pontuacao
+	inc r0
+	store pontuacao, r0
+	
+	pop r0
+	rts
 
 ;r0 - posicao atual | r1 - tecla pressionada 
 ChangePosBird:
@@ -339,21 +371,34 @@ VerificaBird: ;verifica se passaro bateu em um tiro
 		pop r1
 		pop r0
  		rts
-
-GetEspaco:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
+	
+GetDecisao:	; Espera que uma tecla seja digitada (s ou n)
 	push r0
 	push r1
-	loadn r1, #' '	; Se nao digitar nada vem 255
-
-   GetEspacoLoop:
-		inchar r0			; Le o teclado, se nada for digitado = 255
-		cmp r0, r1			;compara r0 com 255
-		jne GetEspacoLoop	; Fica lendo ate' que digite uma tecla valida
-
+	push r2
+	
+	GetDecisao_Loop:
+	
+		inchar r0			
+		loadn r1, #'s'	
+		cmp r0, r1			
+		jeq novamente ; se foi s
+		
+		loadn r1, #'n'	
+		cmp r0, r1	
+		jeq fim ; se foi n
+		
+		jmp GetDecisao_Loop; se nao foi s nem n
+		
+	novamente:; reiniciar jogo
+	
+	call ApagaTela
+	
+	pop r2
 	pop r1
 	pop r0
-	rts
-
+	
+	jmp Main
 
 ImprimeBird:
 	push r0
@@ -1125,3 +1170,6 @@ tela1Linha26 : string "                                        "
 tela1Linha27 : string "                                        "
 tela1Linha28 : string "________________________________________"
 tela1Linha29 : string "////////////////////////////////////////"
+
+
+
