@@ -4,6 +4,12 @@ Trabalho para a disciplina SSC0119 - Prática em Organização de Computadores (
 O objetivo desse trabalho é aplicar os conceitos aprendidos durante o semestre sobre o funcionamento interno de uma CPU e a forma como os comandos do software em Assembly se relacionam com o hardware da 
 máquina.
 
+## Explicações em Vídeos
+
+[Explicação da modificação do processador](https://youtu.be/qPHO3rvlrGc)
+
+[Explicação do jogo](https://youtu.be/-Bqx55UJdX8)
+
 ---
 ## Como executar?
 
