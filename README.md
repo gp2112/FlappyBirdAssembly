@@ -36,22 +36,22 @@ Você é um pássaro e precisa voar e desviar dos tiros! Voe usando a barra de e
 
 Jogo:
 
-![image](jogo.png)
+![image](images/jogo.png)
 
 Game Over:
 
-![image](game_over.png)
+![image](images/game_over.png)
 
 Execução no simulador:
 
-![imagem](execucao_terminal.png)
+![imagem](images/execucao_terminal.png)
 
 ---
 ## Modificação na CPU:
 
 Adicionado comando RAND, que, através do registrador regRand, retorna ao resgistrado (Rx) o valor "aleatório"
 
-![image](https://github.com/gp2112/FlappyBirdAssembly/blob/main/arquitetura.png)
+![image](images/arquitetura.png)
 
 RAND Rx
 
