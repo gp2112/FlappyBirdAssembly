@@ -9,11 +9,9 @@ Clone esse projeto em seu computador usando o comando:
 `git clone https://github.com/gp2112/FlappyBirdAssembly.git`
 
 
-Abra a pasta pelo terminal e execute:
+Abra a pasta pelo terminal e execute para compilar o jogo.:
 
 `./montador flappy.asm flappy.mif`
-
-para compilar o jogo.
 
 
 Utilize o comando abaixo para executar:
@@ -28,12 +26,15 @@ Utilize o comando abaixo para executar:
 Você é um pássaro e precisa voar e desviar dos tiros!
 
 Jogo:
+
 ![image](jogo.png)
 
 Game Over:
+
 ![image](game_over.png)
 
 Execução no simulador:
+
 ![imagem](execucao_terminal.png)
 
 ---
