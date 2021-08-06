@@ -148,10 +148,13 @@ Main:
 		jne naoPontua
 		call pontua
 		
+		loadn r3, #0
+		
 		naoPontua:
 		
 		;incrementa relogio
 		inc r3
+		
 		
 		call Delay
 		jmp Mainloop
