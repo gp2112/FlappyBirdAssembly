@@ -4,7 +4,7 @@ Trabalho para a disciplina SSC0119 - Prática em Organização de Computadores
 
 ## Jogo Flappy Bird
 
-Você é um pássaro e precisa voar e desfiar dos tiros!
+Você é um pássaro e precisa voar e desviar dos tiros!
 [imagem do jogo]
 
 ## Modificação na CPU:
