@@ -146,8 +146,10 @@ Main:
 		mod r0, r3, r0
 		cmp r4, r0
 		jne naoPontua
-		call pontua
 		
+		call pontua
+		loadn r3, #0
+
 		naoPontua:
 		
 		;incrementa relogio
