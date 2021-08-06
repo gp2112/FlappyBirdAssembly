@@ -7,10 +7,9 @@ birdbaixo: string "?@A"
 
 apagaP: string "   "
 
-score: string "score:"
+score: string "score: "
 
 perdeuStr: string "Voce perdeu lol -                    jogar novamente s/n ?"
-
 
 NumAleatorio: var #1 	; Guarda um numero aleatorio de 0 a 4
 
@@ -65,6 +64,11 @@ posTiro4: var #1
 posTiro5: var #1
 
 Main:
+	
+	; Imprime string "Score"
+	loadn r0, #67
+	loadn r1, #score
+	call ImprimeStr
 
 	; setta os valores iniciais
 	loadn r0, #410
@@ -131,6 +135,8 @@ Main:
 		call Delay
 		call Delay
 		call Delay
+		call Delay
+		call Delay
 		
 		
 	continue:
@@ -177,11 +183,17 @@ Main:
 
 pontua: ; aumentar pontuacao
 	push r0
+	push r1
 	
-	load r0, pontuacao
-	inc r0
-	store pontuacao, r0
+	loadn r0, #74 ; posicao
+
+	load r1, pontuacao
+	inc r1
+	store pontuacao, r1
 	
+	call ImprimeInt 
+
+	pop r1
 	pop r0
 	rts
 
