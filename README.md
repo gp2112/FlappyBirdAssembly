@@ -1,5 +1,8 @@
 # FlappyBirdAssembly
-Trabalho para a disciplina SSC0119 - Prática em Organização de Computadores
+Trabalho para a disciplina SSC0119 - Prática em Organização de Computadores (2021)
+
+O objetivo desse trabalho é aplicar os conceitos aprendidos durante o semestre sobre o funcionamento interno de uma CPU e a forma como os comandos do software em Assembly se relacionam com o hardware da 
+máquina.
 
 ---
 ## Como executar?
@@ -23,7 +26,7 @@ Utilize o comando abaixo para executar:
 ---
 ## Jogo Flappy Bird
 
-Você é um pássaro e precisa voar e desviar dos tiros!
+Você é um pássaro e precisa voar e desviar dos tiros! Voe usando a barra de espaço, não seja atingido, nem caia no chão!
 
 Jogo:
 
